@@ -1,0 +1,295 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ticket Confirmed</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+  /* ---------- RESET & VARIABLES ---------- */
+  :root {
+    --primary-orange: #F2994A;
+    --primary-hover: #e67e22;
+    --bg-color: #f8f9fa;
+    --text-dark: #333333;
+    --text-grey: #666666;
+    --white: #ffffff;
+    
+    --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 40px 20px;
+  }
+
+  /* --- BACKGROUND SHAPE (ORANGE CURVE) --- */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 55vw;
+    height: 100vh;
+    background: var(--primary-orange);
+    border-bottom-left-radius: 100%;
+    z-index: -1;
+    opacity: 0.9;
+  }
+
+  /* --- TICKET CONTAINER (GLASS EFFECT) --- */
+  .ticket {
+    width: 100%;
+    max-width: 500px;
+    padding: 40px;
+    border-radius: 25px;
+    
+    /* Glassmorphism */
+    background: rgba(255, 255, 255, 0.25); 
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-glass);
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Ticket Punch Holes */
+  .ticket:before, .ticket:after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--bg-color); /* Matches body bg */
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+  }
+  .ticket:before { left: -10px; }
+  .ticket:after { right: -10px; }
+
+  /* Decorative Orange Strip */
+  .ticket::after-border {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 8px;
+    background: var(--primary-orange);
+  }
+
+  h1.title {
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* --- TICKET DETAILS --- */
+  .details {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+
+  .details p {
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 5px;
+  }
+
+  .details p:last-child { border-bottom: none; }
+
+  .label { font-weight: 700; color: var(--text-grey); }
+  .value { font-weight: 600; color: var(--text-dark); text-align: right; }
+
+  /* Seat Breakdown Block */
+  .seat-block {
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: 3px solid var(--primary-orange);
+    margin-top: 5px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+  }
+
+  /* Barcode */
+  .barcode {
+    width: 100%;
+    height: 50px;
+    background: repeating-linear-gradient(
+      90deg,
+      #333,
+      #333 2px,
+      transparent 2px,
+      transparent 5px
+    );
+    border-radius: 5px;
+    margin-top: 15px;
+    opacity: 0.8;
+  }
+
+  /* --- BUTTONS --- */
+  .button-area {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 50px;
+    background: var(--primary-orange);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(242, 153, 74, 0.3);
+  }
+
+  button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(242, 153, 74, 0.4);
+  }
+
+  /* Secondary Button Style */
+  button:last-child {
+    background: white;
+    color: var(--text-dark);
+    border: 1px solid #eee;
+  }
+  button:last-child:hover {
+    color: var(--primary-orange);
+    border-color: var(--primary-orange);
+  }
+
+  /* Mobile Responsive */
+  @media(max-width: 768px){
+    body::before { width: 100vw; height: 30vh; border-radius: 0 0 50% 50%; }
+    .ticket { padding: 25px; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="ticket" id="ticket-area">
+
+    <h1 class="title">🎟 Ticket Confirmed</h1>
+
+    <div class="details">
+        <p><span class="label">Name:</span> <span class="value">{{ booking.user.username }}</span></p>
+        <p><span class="label">Movie:</span> <span class="value">{{ booking.movie.Movie_Name }}</span></p>
+        <p><span class="label">Show Date:</span> <span class="value">{{ booking.show_date }}</span></p> 
+        <p><span class="label">Theatre:</span> <span class="value">{{ booking.theatre.name }}</span></p>
+        <p><span class="label">Address:</span> <span class="value">{{ booking.theatre.address }}</span></p>
+        <p><span class="label">Show Time:</span> <span class="value">{{ booking.show_time }}</span></p>
+
+        <p style="border-bottom: none;"><span class="label">Seats Selected:</span></p>
+        <div class="seat-block" id="seatBreakdown"></div>
+
+        <p><span class="label">Seat Type:</span> <span class="value" id="seatTypes"></span></p>
+
+        <p><span class="label">Total Seats:</span> <span class="value" id="totalSeats">0</span></p>
+
+        <p style="border-top: 2px dashed #ccc; margin-top:10px; padding-top:10px; border-bottom:none;">
+            <span class="label" style="color:var(--primary-orange); font-size:1.1rem;">Total Price:</span> 
+            <span class="value" style="color:var(--primary-orange); font-size:1.2rem;">₹{{ booking.total_price }}</span>
+        </p>
+
+        <div class="barcode"></div>
+        <div style="text-align:center; font-size:0.8rem; letter-spacing:3px; margin-top:5px; color:#666;">1234 5678 9012</div>
+    </div>
+
+</div>
+
+
+<div class="button-area">
+    <a href="{% url 'download_ticket' booking.b_id %}">
+        <button type="button">Download PDF</button>
+    </a>
+    <button onclick="window.location.href='{% url 'home' %}'">Back to Home</button>
+</div>
+
+
+<script>
+// Seats breakdown & types logic
+(function() {
+    const rawSeats = "{{ booking.seats }}"; // String like "1, 2, 25"
+    if(!rawSeats) return;
+
+    const seatNumbers = rawSeats.split(",").map(s => parseInt(s.trim()));
+    document.getElementById("totalSeats").textContent = seatNumbers.length;
+
+    const seatTypesPrice = { VIP: 500, PREMIUM: 350, REGULAR: 250 };
+    const seatTypeSeats = { VIP: [], PREMIUM: [], REGULAR: [] };
+
+    seatNumbers.forEach(num => {
+        if(num <= 20) seatTypeSeats.VIP.push(num);
+        else if(num <= 60) seatTypeSeats.PREMIUM.push(num);
+        else seatTypeSeats.REGULAR.push(num);
+    });
+
+    let breakdownHTML = "";
+    if(seatTypeSeats.VIP.length > 0) breakdownHTML += "<strong>VIP:</strong> " + seatTypeSeats.VIP.join(", ") + "<br>";
+    if(seatTypeSeats.PREMIUM.length > 0) breakdownHTML += "<strong>Premium:</strong> " + seatTypeSeats.PREMIUM.join(", ") + "<br>";
+    if(seatTypeSeats.REGULAR.length > 0) breakdownHTML += "<strong>Regular:</strong> " + seatTypeSeats.REGULAR.join(", ");
+    
+    document.getElementById("seatBreakdown").innerHTML = breakdownHTML || "No seats selected";
+
+    let typesStr = Object.entries(seatTypeSeats)
+        .filter(([_, seats]) => seats.length > 0)
+        .map(([type]) => `${type}`)
+        .join(", ");
+    
+    document.getElementById("seatTypes").textContent = typesStr;
+})();
+
+function downloadPDF() {
+    const ticket = document.getElementById("ticket-area");
+    html2pdf().set({
+        margin: 10,
+        filename: 'Ticket_{{ booking.id }}.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 3, backgroundColor: '#ffffff' },
+        jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
+    }).from(ticket).save();
+}
+</script>
+
+</body>
+</html>

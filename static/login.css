@@ -1,0 +1,215 @@
+/* =========================
+        🌌 Global Styles
+        ========================= */
+        body {
+            font-family: 'Poppins', 'Roboto', 'Inter', sans-serif;
+           background: linear-gradient(135deg, #0c0c68, #1c1c35, #0f0f25);
+            color: #f0f0f0;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* =========================
+        💫 Login Section Container
+        ========================= */
+        .login-section {
+            width: 100%;
+            max-width: 450px;
+            border-radius: 25px;
+            padding: 40px 35px;
+            background: linear-gradient(145deg, rgba(28,28,58,0.9), rgba(52,52,90,0.9));
+            border: 2px solid rgba(0,191,255,0.2);
+            box-shadow: 0 0 35px rgba(0,191,255,0.4), 0 0 50px rgba(0,255,191,0.15);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+        }
+
+        /* Animated gradient overlay */
+        .login-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(120deg, rgba(0,191,255,0.1), rgba(0,255,191,0.1), rgba(0,191,255,0.1));
+            animation: rotateGradient 20s linear infinite;
+            z-index: 0;
+            border-radius: 25px;
+        }
+
+        /* Double glowing inner border */
+        .login-section::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            border: 2px solid rgba(0,191,255,0.2);
+            border-radius: 22px;
+            pointer-events: none;
+            box-shadow: 0 0 20px rgba(0,191,255,0.1), 0 0 35px rgba(0,255,191,0.05);
+        }
+
+        /* =========================
+        💫 Inner Login Container
+        ========================= */
+        .login-container {
+            position: relative;
+            z-index: 1; /* Above overlay */
+            text-align: center;
+        }
+
+        /* =========================
+        ✨ Heading & Subtext
+        ========================= */
+        .login-container h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #00bfff, #00ffff, #00ffcc, #00bfff);
+            background-size: 300% 300%;
+            -webkit-background-clip : text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 12px rgba(0,191,255,0.8);
+            font-family: 'Orbitron', 'Exo 2', 'Poppins', sans-serif;
+            animation: gradientText 6s ease infinite;
+        }
+
+        .login-container p {
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            color: #ffffff;
+        }
+
+        /* =========================
+        🔹 Input Fields
+        ========================= */
+        form input {
+            width: 400px;
+            padding: 14px 16px;
+            margin: 14px 0;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            font-size: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            outline: none;
+            transition: all 0.3s ease, box-shadow 0.3s ease;
+            color: #fff;
+        }
+
+        form input::placeholder {
+            color: #aaa;
+        }
+
+        form input:focus {
+            background: rgba(255,255,255,0.15);
+            border-color: #00bfff;
+            box-shadow: 0 0 15px #00bfff, 0 0 30px #00ffff;
+        }
+
+        /* =========================
+        🔹 Submit Button
+        ========================= */
+        .btn {
+            width: 100%;
+            padding: 14px 0;
+            margin-top: 15px;
+            background: linear-gradient(135deg, #0066cc, #00bfff);
+            color: #fff;
+            font-weight: bold;
+            font-family: 'Exo 2', 'Orbitron', 'Poppins', sans-serif;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s ease, transform 0.25s ease, box-shadow 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255,255,255,0.1);
+            transform: translate(-50%, -50%) scale(0);
+            border-radius: 50%;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            opacity: 0;
+        }
+
+        .btn:hover::after {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 0 25px #00bfff, 0 0 40px #00ffff;
+            background: linear-gradient(135deg, #00ffff, #00bfff);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+            box-shadow: 0 0 25px #00bfff, 0 0 40px #00ffff inset;
+        }
+
+        /* =========================
+        🔹 Extra Links
+        ========================= */
+        .extra-buttons {
+            margin-top: 18px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .extra-buttons a {
+            text-decoration: none;
+            color: #00ccff;
+            font-size: 0.9rem;
+            transition: color 0.25s ease, text-shadow 0.25s ease;
+        }
+
+        .extra-buttons a:hover {
+            color: #00ffff;
+            text-shadow: 0 0 8px #00bfff;
+        }
+
+        /* =========================
+        🔹 Animations
+        ========================= */
+        @keyframes rotateGradient {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* =========================
+        🔹 Responsive
+        ========================= */
+        @media (max-width: 480px) {
+            .login-section {
+                padding: 30px 20px;
+            }
+            .login-container h1 {
+                font-size: 1.6rem;
+            }
+            form input {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }

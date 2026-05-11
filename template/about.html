@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us - Movie Ticket Booking System</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ---------- RESET & VARIABLES ---------- */
+  :root {
+    --primary-orange: #F2994A;
+    --primary-hover: #e67e22;
+    --bg-color: #f8f9fa;
+    --text-dark: #333333;
+    --text-grey: #666666;
+    --white: #ffffff;
+    
+    --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  /* --- BACKGROUND SHAPE (ORANGE CURVE) --- */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 55vw;
+    height: 100vh;
+    background: var(--primary-orange);
+    border-bottom-left-radius: 100%;
+    z-index: -1;
+    opacity: 0.9;
+  }
+
+  /* --- CONTAINER (GLASS + ANIMATED BORDER) --- */
+  .container {
+    /* Glass Effect Base */
+    background: rgba(255, 255, 255, 0.85); 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-glass);
+    
+    width: 100%;
+    max-width: 700px; /* Wider for text reading */
+    padding: 50px 40px;
+    border-radius: 20px;
+    text-align: center;
+    
+    /* Animation Setup */
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  /* --- ROTATING LINE ANIMATION --- */
+  .container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    /* Orange Gradient Rotation */
+    background: linear-gradient(
+        120deg, 
+        transparent, 
+        rgba(242, 153, 74, 0.6), 
+        transparent
+    );
+    animation: rotateGradient 6s linear infinite;
+    z-index: -1;
+  }
+
+  /* Inner White Layer for readability */
+  .container::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 18px;
+    z-index: -1;
+  }
+
+  /* --- TYPOGRAPHY --- */
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    
+    /* Text Gradient */
+    background: linear-gradient(90deg, #333, #F2994A, #333);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientText 3s linear infinite;
+  }
+
+  p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-grey);
+    margin-bottom: 20px;
+  }
+
+  strong {
+    color: var(--primary-orange);
+    font-weight: 600;
+  }
+
+  /* --- ANIMATIONS --- */
+  @keyframes rotateGradient {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes gradientText {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+
+  /* Mobile Responsive */
+  @media(max-width:768px){
+    body::before { width: 100vw; height: 30vh; border-radius: 0 0 50% 50%; }
+    .container { padding: 30px 20px; }
+    h1 { font-size: 2rem; }
+    p { font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>About Us</h1>
+  <p>
+    Welcome to the <strong>Movie Ticket Booking System</strong>, your one-stop platform 
+    for hassle-free, fast, and smooth ticket booking! 🎬✨  
+  </p>
+
+  <p>
+    Our mission is simple — to make your movie-going experience easier and 
+    more enjoyable. Whether it’s the latest blockbuster, an action thriller, 
+    or a romantic drama, we ensure you book your seat instantly with comfort.
+  </p>
+
+  <p>
+    We continuously work on improving speed, security, and overall user 
+    experience. Thank you for choosing our platform! 🍿
+  </p>
+</div>
+
+</body>
+</html>

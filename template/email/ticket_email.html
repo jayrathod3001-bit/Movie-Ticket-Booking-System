@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <body>
+    <p>Hi {{ booking.user.username }},</p>
+    <p>Your ticket for <strong>{{ booking.movie.Movie_Name }}</strong> is attached.</p>
+    <ul>
+      <li>Theatre: {{ booking.theatre.name }}</li>
+      <li>Show Date: {{ booking.show_date }}</li>
+      <li>Show Time: {{ booking.show_time }}</li>
+      <li>Seats: {{ booking.seats }}</li>
+      <li>Total: ₹{{ booking.total_price }}</li>
+    </ul>
+    <p>Enjoy the show!</p>
+    <p>— Movie Ticket System</p>
+  </body>
+</html>

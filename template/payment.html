@@ -1,0 +1,240 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Payment</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ---------- RESET & VARIABLES ---------- */
+  :root {
+    --primary-orange: #F2994A;
+    --primary-hover: #e67e22;
+    --bg-color: #f8f9fa;
+    --text-dark: #333333;
+    --text-grey: #666666;
+    --white: #ffffff;
+    
+    --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 30px;
+  }
+
+  /* --- BACKGROUND SHAPE (ORANGE CURVE) --- */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 55vw;
+    height: 100vh;
+    background: var(--primary-orange);
+    border-bottom-left-radius: 100%;
+    z-index: -1;
+    opacity: 0.9;
+  }
+
+  /* --- PAYMENT WRAPPER (GLASS EFFECT) --- */
+  .payment-wrapper {
+    width: 100%;
+    max-width: 480px;
+    padding: 28px;
+    border-radius: 20px;
+    text-align: center;
+
+    /* Glassmorphism */
+    background: rgba(255, 255, 255, 0.25); 
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: var(--shadow-glass);
+  }
+
+  h2 { font-size: 1.7rem; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
+  .sub-text { font-size: .9rem; color: var(--text-grey); margin-bottom: 14px; }
+
+  .scanner { width: 200px; height: 200px; margin: 14px auto; border-radius: 12px; position: relative; overflow: hidden; border: 3px dashed var(--primary-orange); background: #fff; }
+  .scanner img { width:100%; height:100%; object-fit:cover; display:block; }
+  .scanner-line { width:100%; height:4px; background:var(--primary-orange); position:absolute; top:0; left:0; animation:scan 2s linear infinite; box-shadow:0 0 8px var(--primary-orange); }
+  @keyframes scan { 0%{top:0} 100%{top:100%} }
+
+  .summary { text-align:left; font-size:0.95rem; margin-top: 14px; line-height:1.7; background: rgba(255,255,255,0.7); padding:16px; border-radius:12px; color:var(--text-dark); }
+  .summary p { display:flex; justify-content:space-between; margin:6px 0; }
+  .label { color:var(--text-grey); font-weight:600; }
+  .value { font-weight:700; color:var(--text-dark); text-align:right; }
+
+  .seat-block { margin-left: 10px; padding-left: 8px; border-left: 3px solid var(--primary-orange); color: var(--text-dark); font-size: .92rem; margin-bottom: 8px; }
+
+  button { width:100%; padding:12px 14px; margin-top:16px; border:none; border-radius:50px; background:var(--primary-orange); color:white; cursor:pointer; font-weight:700; font-size:1rem; box-shadow:0 8px 20px rgba(242,153,74,0.25); }
+  button:hover { background:var(--primary-hover); transform:translateY(-2px); box-shadow:0 12px 30px rgba(242,153,74,0.32); }
+
+  @media(max-width:600px){ .payment-wrapper { padding:18px } .scanner { width:160px; height:160px } }
+</style>
+</head>
+<body>
+
+<div class="payment-wrapper">
+  <h2>QR Payment</h2>
+  <p class="sub-text">Scan to pay securely</p>
+
+  <div class="scanner">
+    <!-- Replace this src if you use dynamic or different QR -->
+    <img src="/media/movies/qr_code.jpeg" alt="QR Code">
+    <div class="scanner-line"></div>
+  </div>
+
+  <div class="summary">
+    <p><span class="label">Movie:</span> <span class="value" id="mName">-</span></p>
+    <p><span class="label">Theatre:</span> <span class="value" id="tName">-</span></p>
+    <p><span class="label">Date:</span> <span class="value" id="sDate">-</span></p>
+    <p><span class="label">Time:</span> <span class="value" id="sTime">-</span></p>
+
+    <p style="margin-top:10px;"><span class="label">Seats:</span></p>
+    <div id="sSeats" class="seat-block">-</div>
+
+    <p><span class="label">Type:</span> <span class="value" id="sType">-</span></p>
+    <p><span class="label">Count:</span> <span class="value" id="totalSeats">0</span></p>
+
+    <p style="border-top:1px dashed #e0e0e0; padding-top:8px; margin-top:8px;">
+      <span class="label" style="color:var(--primary-orange);">Total:</span>
+      <span class="value" id="sPrice" style="color:var(--primary-orange); font-size:1.1rem;">₹0</span>
+    </p>
+  </div>
+
+  <!-- Payment form: will be filled from localStorage.ticketData -->
+  <form id="payForm" method="post" action="{% url 'confirm_booking' %}">
+    {% csrf_token %}
+    <input type="hidden" name="movie_id" id="movieIdInput" value="">
+    <input type="hidden" name="theatre_id" id="theatreIdInput" value="">
+    <input type="hidden" name="show_date" id="movieDateInput" value="">
+    <input type="hidden" name="show_time" id="showTimeInput" value="">
+    <input type="hidden" name="seats" id="seatsInput" value="">
+    <input type="hidden" name="seat_type" id="seatTypeInput" value="">
+    <input type="hidden" name="total_price" id="totalPriceInput" value="">
+
+    <button type="submit" id="payNowBtn">Confirm Payment & Book</button>
+  </form>
+</div>
+
+<script>
+(function () {
+  // defensive read: accept multiple possible key-names that different pages might set
+  const raw = localStorage.getItem("ticketData");
+  if (!raw) {
+    alert("Booking data missing. Please reselect movie and seats.");
+    window.location.href = "{% url 'home' %}";
+    return;
+  }
+
+  let data = {};
+  try { data = JSON.parse(raw); } catch(e){ data = {}; }
+
+  // helper to read both snake_case and camelCase keys
+  const pick = (o, ...keys) => {
+    for(const k of keys){
+      if(o && Object.prototype.hasOwnProperty.call(o, k) && o[k] !== undefined && o[k] !== null) return o[k];
+    }
+    return undefined;
+  };
+
+  // possible key names used across templates:
+  const movieId = pick(data, 'movie_id', 'movieId', 'movieId');
+  const movieName = pick(data, 'movie_name', 'movieName', 'movie') || '';
+  const theatreId = pick(data, 'theatre_id', 'theatreId', 'theatre_id');
+  const theatreName = pick(data, 'theatre_name', 'theatreName') || '';
+  const showDate = pick(data, 'show_date', 'showDate', 'releaseDate') || '';
+  const showTime = pick(data, 'show_time', 'showTime') || '';
+  const seatNumbers = pick(data, 'seatNumbers', 'seat_numbers', 'seats', 'seatNumbers') || [];
+  const seatsString = Array.isArray(seatNumbers) ? seatNumbers.join(",") : (pick(data, 'seats_string') || pick(data, 'seats') || '');
+  const totalPrice = pick(data, 'totalPrice', 'total_price', 'totalPrice') || 0;
+  const seatTypeFromData = pick(data, 'seatType', 'seat_type') || '';
+
+  // If movieId or theatreId missing -> send user back to timing to reselect
+  if (!movieId || !theatreId) {
+    alert("Booking session expired or incomplete. Please select movie, theatre and seats again.");
+    window.location.href = "{% url 'timing' %}";
+    return;
+  }
+
+  // populate UI
+  document.getElementById("mName").textContent = movieName || '-';
+  document.getElementById("tName").textContent = theatreName || '-';
+  document.getElementById("sDate").textContent = showDate || '-';
+  document.getElementById("sTime").textContent = showTime || '-';
+
+  document.getElementById("totalSeats").textContent = (Array.isArray(seatNumbers) ? seatNumbers.length : (seatsString ? seatsString.split(",").length : 0));
+  document.getElementById("sPrice").textContent = "₹" + (totalPrice || 0);
+
+  // Build seat buckets for display
+  let seatTypeSeats = { VIP: [], PREMIUM: [], REGULAR: [] };
+  const parsedSeatNums = Array.isArray(seatNumbers) ? seatNumbers.map(n => parseInt(n,10)) : (seatsString ? seatsString.split(",").map(s => parseInt(s,10)) : []);
+
+  parsedSeatNums.forEach(num => {
+    if (!num || isNaN(num)) return;
+    if (num <= 20) seatTypeSeats.VIP.push(num);
+    else if (num <= 60) seatTypeSeats.PREMIUM.push(num);
+    else seatTypeSeats.REGULAR.push(num);
+  });
+
+  let seatsSelectedStr = "";
+  if (seatTypeSeats.VIP.length) seatsSelectedStr += `VIP: ${seatTypeSeats.VIP.join(", ")}<br>`;
+  if (seatTypeSeats.PREMIUM.length) seatsSelectedStr += `Premium: ${seatTypeSeats.PREMIUM.join(", ")}<br>`;
+  if (seatTypeSeats.REGULAR.length) seatsSelectedStr += `Regular: ${seatTypeSeats.REGULAR.join(", ")}`;
+  document.getElementById("sSeats").innerHTML = seatsSelectedStr || (seatsString || '-');
+  document.getElementById("sType").textContent = seatTypeFromData || Object.keys(seatTypeSeats).filter(k => seatTypeSeats[k].length).join(", ") || '-';
+
+  // Fill hidden inputs (convert numeric ids to string)
+  document.getElementById("movieIdInput").value = String(movieId);
+  document.getElementById("theatreIdInput").value = String(theatreId);
+  document.getElementById("movieDateInput").value = showDate;
+  document.getElementById("showTimeInput").value = showTime;
+  document.getElementById("seatsInput").value = seatsString || '';
+  document.getElementById("seatTypeInput").value = seatTypeFromData || '';
+  document.getElementById("totalPriceInput").value = totalPrice;
+
+  // Final validation on form submit (prevents sending 'undefined')
+  const form = document.getElementById('payForm');
+  form.addEventListener('submit', function(e){
+    const mv = document.getElementById("movieIdInput").value;
+    const th = document.getElementById("theatreIdInput").value;
+    const dt = document.getElementById("movieDateInput").value;
+    const tm = document.getElementById("showTimeInput").value;
+    const ss = document.getElementById("seatsInput").value;
+
+    if (!mv || !th || !dt || !tm || !ss) {
+      e.preventDefault();
+      alert("Booking details are incomplete. Please go back and reselect seats.");
+      // optional: redirect to seat page with params if minimal data available
+      if (movieId) {
+        const params = new URLSearchParams();
+        params.set('movie_id', movieId);
+        if (theatreId) params.set('theatre_id', theatreId);
+        if (showDate) params.set('show_date', showDate);
+        if (showTime) params.set('show_time', showTime);
+        window.location.href = "{% url 'seat' %}?" + params.toString();
+      } else {
+        window.location.href = "{% url 'timing' %}";
+      }
+      return false;
+    }
+    // otherwise allow submit
+  });
+
+})();
+</script>
+
+</body>
+</html>

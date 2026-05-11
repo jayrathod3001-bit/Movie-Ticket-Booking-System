@@ -1,0 +1,239 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Update Profile</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ---------- RESET & VARIABLES ---------- */
+  :root {
+    --primary-orange: #F2994A;
+    --primary-hover: #e67e22;
+    --bg-color: #f8f9fa;
+    --text-dark: #333333;
+    --text-grey: #666666;
+    --white: #ffffff;
+    
+    --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 40px 20px;
+  }
+
+  /* --- BACKGROUND SHAPE (ORANGE CURVE) --- */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 55vw;
+    height: 100vh;
+    background: var(--primary-orange);
+    border-bottom-left-radius: 100%;
+    z-index: -1;
+    opacity: 0.9;
+  }
+
+  /* --- PROFILE CONTAINER (BLURRED GLASS EFFECT) --- */
+  .profile-container {
+    width: 100%;
+    max-width: 550px;
+    padding: 40px;
+    border-radius: 25px;
+    
+    /* Glassmorphism */
+    background: rgba(255, 255, 255, 0.25); 
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-glass);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Top Orange Strip */
+  .profile-container::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 8px;
+    background: var(--primary-orange);
+  }
+
+  h2 {
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin-bottom: 25px;
+    font-weight: 700;
+  }
+
+  /* --- PROFILE IMAGE --- */
+  .profile-container img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary-orange);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    padding: 3px;
+    background: white;
+  }
+
+  /* --- FORM INPUTS --- */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="date"],
+  select,
+  input[type="file"] {
+    width: 100%;
+    padding: 12px 20px;
+    margin-bottom: 15px;
+    border: 1px solid #eee;
+    border-radius: 50px; /* Pill shape */
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    outline: none;
+    transition: 0.3s;
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* Special styling for file input to look better */
+  input[type="file"] {
+    padding: 10px;
+    border-radius: 15px; 
+    background: #fff;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--primary-orange);
+    background: var(--white);
+    box-shadow: 0 0 10px rgba(242, 153, 74, 0.2);
+  }
+
+  /* --- BUTTONS --- */
+  .btn {
+    display: inline-block;
+    width: 100%;
+    padding: 12px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+    border: none;
+    margin-top: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  /* Submit Button */
+  .btn-submit {
+    background: var(--primary-orange);
+    color: var(--white);
+  }
+  .btn-submit:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(242, 153, 74, 0.4);
+  }
+
+  /* Home Button */
+  .btn-home {
+    background: var(--white);
+    color: var(--text-dark);
+    border: 1px solid #eee;
+    margin-top: 15px;
+  }
+  .btn-home:hover {
+    color: var(--primary-orange);
+    border-color: var(--primary-orange);
+    transform: translateY(-2px);
+  }
+
+  /* Messages */
+  .message {
+    color: #d35400;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  /* Mobile Responsive */
+  @media(max-width: 768px){
+    body::before { width: 100vw; height: 30vh; border-radius: 0 0 50% 50%; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="profile-container">
+    <h2>✏️ Update Profile</h2>
+
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="message">{{ msg }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if user.photo %}
+            <img src="{{ user.photo.url }}" alt="{{ user.username }}">
+        {% else %}
+            <img src="{% static 'default_profile.png' %}" alt="Profile">
+        {% endif %}
+
+        <input type="file" name="photo">
+
+        <input type="text" name="username" value="{{ user.username }}" placeholder="Username" required>
+        <input type="text" name="first_name" value="{{ user.first_name }}" placeholder="First Name" required>
+        <input type="text" name="last_name" value="{{ user.last_name }}" placeholder="Last Name" required>
+        
+        <input type="date" name="birth_date" value="{{ user.birth_date|date:'Y-m-d' }}" placeholder="Birth Date">
+        
+        <select name="gender">
+            <option value="">Select Gender</option>
+            <option value="Male" {% if user.gender == "Male" %}selected{% endif %}>Male</option>
+            <option value="Female" {% if user.gender == "Female" %}selected{% endif %}>Female</option>
+            <option value="Other" {% if user.gender == "Other" %}selected{% endif %}>Other</option>
+        </select>
+
+        <input type="text" name="phone" value="{{ user.phone }}" placeholder="Phone">
+        <input type="email" name="email" value="{{ user.email }}" placeholder="Email" required>
+        <input type="password" name="password1" placeholder="New Password">
+        <input type="password" name="password2" placeholder="Confirm New Password">
+
+        <button type="submit" class="btn btn-submit">💾 Update Profile</button>
+    </form>
+
+    <a href="{% url 'home' %}" class="btn btn-home">🏠 Back to Home</a>
+</div>
+
+</body>
+</html>

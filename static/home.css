@@ -1,0 +1,333 @@
+/* ---------- RESET & VARIABLES ---------- */
+  :root {
+    /* Image Theme Colors */
+    --primary-orange: #F2994A;  /* The main Orange color */
+    --primary-hover: #e67e22;
+    --bg-color: #f8f9fa;        /* Light whitish grey background */
+    --text-dark: #333333;       /* Main dark text */
+    --text-grey: #666666;       /* Secondary text */
+    --white: #ffffff;
+    
+    /* Shadows */
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05);
+    --shadow-hover: 0 15px 35px rgba(242, 153, 74, 0.2);
+    /* New Glass Shadow */
+    --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* --- BACKGROUND SHAPE (ORANGE CURVE FROM IMAGE) --- */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 55vw;
+    height: 100vh;
+    background: var(--primary-orange);
+    /* Creating the curved shape */
+    border-bottom-left-radius: 100%;
+    z-index: -1;
+    opacity: 0.9;
+  }
+
+  /* ---------- FILTER TOGGLE BUTTON ---------- */
+  .filter-toggle-btn {
+    position: absolute; top: 30px; left: 30px;
+    background: var(--white);
+    color: var(--primary-orange);
+    border: 1px solid transparent;
+    padding: 12px 25px; border-radius: 50px;
+    font-weight: 600; cursor: pointer; z-index: 1001;
+    transition: .3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  .filter-toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar {
+    position: fixed; top: 0; left: -300px; width: 280px; height: 100%;
+    background: var(--white);
+    padding: 30px 20px; transition: left .4s ease;
+    box-shadow: 5px 0 30px rgba(0,0,0,0.05); 
+    z-index: 1000; overflow-y: auto;
+  }
+  .sidebar.active { left: 0; }
+  
+  .username-text {
+    font-weight: 700; color: var(--text-dark); 
+    text-align: center; margin-bottom: 30px; 
+    font-size: 1.2rem;
+  }
+  .username-text strong { color: var(--primary-orange); }
+
+  /* ---------- FILTERS ---------- */
+  .filter-group { margin-bottom: 20px; }
+  .filter-group label { display: block; margin-bottom: 8px; color: var(--text-grey); font-size: 0.9rem; font-weight: 500; }
+  .filter-group select {
+    width: 100%; padding: 12px; border-radius: 8px;
+    border: 1px solid #eee;
+    background: #f9f9f9; color: var(--text-dark);
+    transition: .3s ease;
+  }
+  .filter-group select:focus {
+    border-color: var(--primary-orange); outline: none; background: var(--white);
+  }
+  .sidebar .btn { width: 100%; margin-top: 15px; }
+
+  /* ---------- GENERAL BUTTONS (Orange Theme) ---------- */
+  .btn {
+    display: inline-block; padding: 12px 35px; border-radius: 50px;
+    background: var(--primary-orange);
+    color: var(--white); border: none; text-decoration: none;
+    font-weight: 600; transition: .3s ease;
+    box-shadow: 0 4px 10px rgba(242, 153, 74, 0.3);
+    font-size: 0.95rem;
+  }
+  
+  .btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(242, 153, 74, 0.4);
+    color: white;
+  }
+
+  /* ---------- CONTAINER ---------- */
+  .container { 
+    margin-left: 0; padding: 40px 20px; 
+    transition: margin-left .4s ease; 
+    max-width: 1400px; margin: 0 auto; 
+  }
+  .sidebar.active ~ .container { margin-left: 280px; width: calc(100% - 280px); }
+
+  /* ---------- HEADER (HERO SECTION) ---------- */
+  .header-message {
+    background: transparent;
+    padding: 50px 20px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .header h1 {
+    font-family: 'Poppins', sans-serif; 
+    text-align: left;
+    font-size: 3.5rem;
+    color: var(--text-dark);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 30px;
+    max-width: 600px;
+  }
+  
+  .auth-buttons { 
+    display: flex; flex-wrap: wrap; gap: 20px; 
+    justify-content: flex-start;
+  }
+  
+  .message {
+    position: relative;
+    text-align: left; font-size: 1.1rem; 
+    padding: 20px 30px; margin-bottom: 50px;
+    background: var(--white);
+    border-radius: 15px; 
+    color: var(--text-grey);
+    box-shadow: var(--shadow-soft);
+    border-left: 5px solid var(--primary-orange);
+    max-width: 500px;
+    display: inline-block;
+  }
+  .welcome-big { font-size: 1.5rem; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 5px; }
+  .welcome-small { font-size: 0.95rem; color: var(--text-grey); }
+
+  /* ---------- MOVIE CONTAINERS (BLURRED GLASS EFFECT) ---------- */
+  .movie-container {
+    /* Transparent white for glass effect */
+    background: rgba(255, 255, 255, 0.25);
+    /* The blur magic */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    
+    border-radius: 20px; 
+    padding: 40px; 
+    margin-bottom: 60px;
+    /* Glass shadow + Border */
+    box-shadow: var(--shadow-glass);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .section-title {
+    font-size: 1.8rem; margin-bottom: 30px;
+    color: var(--text-dark);
+    font-weight: 700;
+    position: relative;
+    padding-left: 0;
+    border: none;
+  }
+  .section-title::after {
+    content: ''; display: block; width: 60px; height: 4px;
+    background: var(--primary-orange); margin-top: 10px; border-radius: 2px;
+  }
+  
+  .movie-grid { display: flex; gap: 30px; overflow-x: auto; padding-bottom: 30px; scroll-snap-type: x mandatory; }
+  
+  /* ---------- MOVIE CARD (HOVER BLUR) ---------- */
+  .movie-card {
+    flex: 0 0 auto; width: 260px; height: 380px; 
+    border-radius: 20px; overflow: hidden;
+    position: relative; 
+    transition: .3s ease;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  }
+  
+  .movie-card img { 
+    width: 100%; height: 100%; object-fit: cover; 
+    transition: all 0.3s ease; /* Smooth transition for all properties */
+  }
+  
+  .movie-card:hover { 
+    transform: translateY(-10px); 
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* BLUR EFFECT ON HOVER */
+  .movie-card:hover img { 
+    opacity: 0.8; /* Thoda transparent */
+    transform: scale(1.05);
+    filter: blur(4px); /* Blur effect added here */
+  }
+  
+  /* Card Hover Info */
+  .card-back {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    gap: 10px; text-align: center;
+    /* Slightly dark overlay to make text readable over blur */
+    background: rgba(0, 0, 0, 0.3); 
+    opacity: 0; transition: .3s ease; padding: 20px;
+  }
+  
+  .card-back h3 { 
+    font-size: 1.4rem; margin-bottom: 5px; color: var(--white); font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+  .card-back p { 
+    font-size: 1rem; color: var(--primary-orange); font-weight: 600;
+     text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+  .movie-card:hover .card-back { opacity: 1; }
+
+  /* ---------- PROFILE DROPDOWN ---------- */
+  .profile-menu { position: relative; display: inline-block; }
+  .profile-btn {
+    background: var(--white);
+    color: var(--primary-orange); 
+    padding: 10px 20px; border: none; border-radius: 50px;
+    font-weight: 600; cursor: pointer; transition: 0.3s ease;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+  .profile-btn:hover { background: var(--primary-orange); color: white; }
+  .profile-img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid #eee; }
+
+  .dropdown-content {
+    display: none; position: absolute; top: 60px; right: 0;
+    background: var(--white);
+    min-width: 180px;
+    box-shadow: var(--shadow-soft);
+    border-radius: 10px;
+    z-index: 999; overflow: hidden;
+  }
+  .dropdown-content a {
+    display: block; padding: 12px 20px; color: var(--text-dark);
+    text-decoration: none; transition: 0.2s ease; font-weight: 500;
+    background: none; border: none; text-align: left;
+  }
+  .dropdown-content a:hover {
+    background: #fff3e0; color: var(--primary-orange);
+  }
+  .profile-menu.show .dropdown-content { display: block; }
+
+  /* ---------- FOOTER (BIGGER BUTTONS) ---------- */
+  .footer-buttons {
+    width: 100%; display: flex; justify-content: center; gap: 25px; /* Increased gap */
+    padding: 50px 0; /* Increased padding */
+    margin-top: 40px;
+    background: transparent; 
+    border-top: 1px solid #eee;
+    flex-wrap: wrap;
+  }
+  .footer-btn {
+    background: var(--white); /* White background */
+    border: 2px solid var(--primary-orange); /* Orange border */
+    color: var(--primary-orange); /* Orange text */
+    font-weight: 600; 
+    font-size: 1.1rem; /* Bigger font */
+    /* Increased Height & Width via padding */
+    padding: 15px 40px; 
+    border-radius: 50px;
+    transition: .3s ease;
+    cursor: pointer;
+    box-shadow: var(--shadow-soft);
+  }
+  .footer-btn:hover {
+    background: var(--primary-orange); /* Orange background on hover */
+    color: var(--white); /* White text on hover */
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* ---------- POPUPS ---------- */
+  .logout-popup, .popup {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+    display: none; justify-content: center; align-items: center; z-index: 2000;
+  }
+  
+  .logout-box, .popup-box {
+    background: var(--white);
+    padding: 40px; border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    color: var(--text-dark); text-align: center;
+  }
+  
+  .logout-box { width: 380px; }
+  .popup-box { width: 90%; max-width: 800px; height: 80%; display: flex; flex-direction: column; }
+  
+  .logout-box h3 { font-size: 1.3rem; margin-bottom: 30px; font-weight: 600; }
+  .logout-buttons { display: flex; justify-content: center; gap: 20px; }
+  
+  .yes-btn { background: var(--primary-orange); color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; }
+  .yes-btn:hover { background: var(--primary-hover); }
+  
+  .no-btn { background: #f1f1f1; color: var(--text-dark); padding: 12px 30px; border-radius: 50px; border: none; font-weight: 600; cursor: pointer; }
+  .no-btn:hover { background: #e0e0e0; }
+
+  .popup-iframe { width: 100%; height: 100%; border: none; background: #fff; border-radius: 10px; margin-bottom: 20px;}
+  .ok-btn { padding: 10px 35px; border: none; border-radius: 50px; background: var(--primary-orange); color: white; cursor: pointer; align-self: center; font-weight: 600;}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:768px){
+    body::before { width: 100vw; height: 40vh; border-radius: 0 0 50% 50%; }
+    .sidebar{width:250px;}
+    .sidebar.active ~ .container{margin-left:250px; width: calc(100% - 250px);}
+    .header h1 { font-size: 2.5rem; text-align: center; margin: 0 auto 30px auto; }
+    .auth-buttons { justify-content: center; }
+    .message { margin: 0 auto 40px auto; text-align: center; }
+    .movie-grid { gap: 20px; }
+    /* Responsive Footer Buttons */
+    .footer-btn { padding: 12px 30px; font-size: 1rem; }
+  }

@@ -1,0 +1,124 @@
+/* GLOBAL */
+body {
+    font-family: 'Poppins', 'Roboto', 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0c0c68, #1c1c35, #0f0f25);
+    color: #f0f0f0;
+    margin: 0;
+    padding: 40px 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-y: auto !important;   /* ✔ scrolling enabled */
+}
+
+/* BOX */
+.login-section {
+    width: 450px;
+    border-radius: 25px;
+    padding: 40px 35px;
+    background: linear-gradient(145deg, rgba(28,28,58,0.9), rgba(52,52,90,0.9));
+    border: 2px solid rgba(0,191,255,0.2);
+    box-shadow: 0 0 35px rgba(0,191,255,0.4), 0 0 50px rgba(0,255,191,0.15);
+    position: relative;
+
+    /* ✔ Allow box to grow (no cut) */
+    height: auto;
+    margin-bottom: 60px;
+    backdrop-filter: blur(12px);
+}
+
+.login-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(120deg, rgba(0,191,255,0.1), rgba(0,255,191,0.1), rgba(0,191,255,0.1));
+    animation: rotateGradient 20s linear infinite;
+}
+
+.login-container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+/* HEADING */
+.login-container h1 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+    background: linear-gradient(90deg, #00bfff, #00ffff, #00ffcc, #00bfff);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 12px rgba(0,191,255,0.8);
+    animation: gradientText 6s ease infinite;
+}
+
+/* INPUT FIELDS */
+form input,
+select.select-box {
+    width: 100%;  /* ✔ auto fit */
+    padding: 14px 16px;
+    margin: 14px 0;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+form input:focus,
+select.select-box:focus {
+    background: rgba(255,255,255,0.15);
+    border-color: #00bfff;
+    box-shadow: 0 0 15px #00bfff, 0 0 30px #00ffff;
+}
+
+.file-box {
+    padding: 10px;
+    background: rgba(255,255,255,0.1);
+}
+
+/* BUTTON */
+.btn {
+    width: 100%;
+    padding: 14px 0;
+    margin-top: 15px;
+    background: linear-gradient(135deg, #0066cc, #00bfff);
+    color: #fff;
+    font-weight: bold;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 0 25px #00bfff, 0 0 40px #00ffff;
+}
+
+/* Extra Links */
+.extra-buttons {
+    margin-top: 20px;
+    text-align: center;
+}
+.extra-buttons a {
+    color: #00ccff;
+    text-decoration: none;
+}
+.extra-buttons a:hover {
+    color: #00ffff;
+    text-shadow: 0 0 8px #00bfff;
+}
+
+/* ANIMATIONS */
+@keyframes rotateGradient {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

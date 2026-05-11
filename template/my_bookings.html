@@ -1,0 +1,272 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Bookings</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ---------- RESET & VARIABLES ---------- */
+  :root {
+    --primary-orange: #F2994A;
+    --primary-hover: #e67e22;
+    --bg-color: #f8f9fa;
+    --text-dark: #333333;
+    --text-grey: #666666;
+    --white: #ffffff;
+    
+    --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    --shadow-soft: 0 5px 15px rgba(0,0,0,0.05);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 40px 20px;
+  }
+
+  /* --- BACKGROUND SHAPE (ORANGE CURVE) --- */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 55vw;
+    height: 100vh;
+    background: var(--primary-orange);
+    border-bottom-left-radius: 100%;
+    z-index: -1;
+    opacity: 0.9;
+  }
+
+  /* --- CONTAINER (BLURRED GLASS EFFECT) --- */
+  .container {
+    width: 100%;
+    max-width: 1200px; 
+    padding: 40px;
+    border-radius: 25px;
+    
+    /* Glassmorphism */
+    background: rgba(255, 255, 255, 0.25); 
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-glass);
+    
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  /* Top Orange Strip */
+  .container::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 8px;
+    background: var(--primary-orange);
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+    font-weight: 700;
+  }
+
+  /* --- TABLE STYLING --- */
+  .table-responsive {
+    overflow-x: auto;
+    border-radius: 15px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.8); 
+    min-width: 900px; /* Prevents squishing */
+  }
+
+  th, td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+    vertical-align: middle;
+  }
+
+  th {
+    background: var(--primary-orange);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Alternating Row Colors */
+  tbody tr:nth-child(even) {
+    background-color: rgba(250, 250, 250, 0.6);
+  }
+
+  tbody tr:hover {
+    background-color: #fff3e0; /* Light orange hover */
+  }
+
+  /* Poster Image */
+  img {
+    width: 60px;
+    height: 85px;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border: 2px solid white;
+  }
+
+  /* Seat Block Formatting */
+  .seat-block {
+    text-align: left;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-dark);
+  }
+
+  /* --- CANCEL BUTTON --- */
+  .btn-cancel {
+    background: #ff4757;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(255, 71, 87, 0.3);
+  }
+
+  .btn-cancel:hover {
+    background: #e84118;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 71, 87, 0.4);
+  }
+
+  /* --- BACK BUTTON --- */
+  .back-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 35px;
+    background: var(--white);
+    color: var(--primary-orange);
+    border: 1px solid var(--primary-orange);
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s ease;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .back-btn:hover {
+    background: var(--primary-orange);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(242, 153, 74, 0.3);
+  }
+
+  /* No Data Message */
+  .no-data {
+    padding: 40px;
+    font-size: 1.2rem;
+    color: var(--text-grey);
+    background: rgba(255,255,255,0.6);
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  /* Mobile Responsive */
+  @media(max-width: 768px){
+    body::before { width: 100vw; height: 30vh; border-radius: 0 0 50% 50%; }
+    .container { padding: 25px; }
+    h1 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎟 My Bookings</h1>
+
+    {% if bookings %}
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Movie</th>
+                    <th>Poster</th>
+                    <th>Theatre</th>
+                    <th>Show Date</th>
+                    <th>Show Time</th>
+                    <th>Seats</th>
+                    <th>Total Seats</th>
+                    <th>Total (₹)</th>
+                    <th>Booked At</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for b in bookings %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td style="font-weight: 600;">{{ b.movie.Movie_Name }}</td>
+                    <td>
+                        {% if b.movie.Photo %}
+                            <img src="{{ b.movie.Photo.url }}" alt="Poster">
+                        {% else %}-{% endif %}
+                    </td>
+                    <td>{{ b.theatre.name }}</td>
+                    <td>{{ b.show_date|date:"D M d" }}</td>
+                    <td style="color: var(--primary-orange); font-weight: 600;">{{ b.show_time }}</td>
+                    
+                    <td class="seat-block">
+                        {% if b.vip_seats %}<strong>VIP:</strong> {{ b.vip_seats|join:", " }}<br>{% endif %}
+                        {% if b.premium_seats %}<strong>Prem:</strong> {{ b.premium_seats|join:", " }}<br>{% endif %}
+                        {% if b.regular_seats %}<strong>Reg:</strong> {{ b.regular_seats|join:", " }}{% endif %}
+                    </td>
+                    
+                    <td>{{ b.total_seats }}</td>
+                    <td style="font-weight: 700;">{{ b.total_price }}</td>
+                    <td style="font-size: 0.85rem; color: var(--text-grey);">{{ b.booked_at|date:"d-m-Y h:i A" }}</td>
+                    
+                    <td>
+                        <form action="{% url 'cancel_booking' b.b_id %}" method="POST" style="margin:0;">
+                            {% csrf_token %}
+                            <button class="btn-cancel">Cancel</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div class="no-data">⚠ No bookings found!</div>
+    {% endif %}
+
+    <a href="{% url 'view_profile' %}" class="back-btn">⬅ Back to Profile</a>
+</div>
+
+</body>
+</html>

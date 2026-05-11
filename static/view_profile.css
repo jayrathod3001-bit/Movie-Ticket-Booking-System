@@ -1,0 +1,78 @@
+/* ===== Body Styling ===== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1f1f2e, #12121d);
+    color: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===== Profile Card ===== */
+.profile-container {
+    background: radial-gradient(circle at top left, #2a2a3a, #1a1a2b);
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    width: 350px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* ===== Profile Image ===== */
+.profile-container img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #ff6b81;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.profile-container img:hover {
+    transform: scale(1.05);
+}
+
+/* ===== Heading ===== */
+.profile-container h1 {
+    font-size: 28px;
+    color: #ff6b81;
+    margin-bottom: 15px;
+}
+
+/* ===== Profile Info ===== */
+.profile-container p {
+    font-size: 16px;
+    margin: 8px 0;
+    color: #e0e0e0;
+}
+
+/* ===== Buttons ===== */
+.profile-container .btn {
+    display: inline-block;
+    margin: 12px 6px 0 6px;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #ff4757, #ff6b81);
+    border: none;
+    border-radius: 12px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.profile-container .btn:hover {
+    background: linear-gradient(135deg, #ff6b81, #ff7aa1);
+    transform: scale(1.05);
+}

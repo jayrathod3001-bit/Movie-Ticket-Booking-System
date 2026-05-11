@@ -1,0 +1,73 @@
+/* Container card */
+.profile-container {
+    max-width: 500px;
+    margin: 50px auto;
+    background-color: #2f3542;
+    padding: 30px;
+    border-radius: 12px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+/* Heading */
+.profile-container h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #ff6b81;
+}
+
+/* Profile Image */
+.profile-container img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ff4757;
+    margin-bottom: 20px;
+}
+
+/* Form Inputs */
+.profile-container input[type="text"],
+.profile-container input[type="email"],
+.profile-container input[type="password"],
+.profile-container input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 15px 0;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: #252540;
+    color: #f0f0f0;
+    transition: 0.3s;
+}
+
+.profile-container input:focus {
+    border-color: #00bfff;
+    outline: none;
+    box-shadow: 0 0 10px #00bfff;
+}
+
+/* Buttons */
+.profile-container .btn {
+    margin: 10px 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-decoration: none;
+    background-color: #ff4757;
+    color: white;
+    border-radius: 6px;
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.profile-container .btn:hover {
+    background-color: #ff6b81;
+}
+
+.message {
+    color: #00ffff;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
