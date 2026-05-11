@@ -80,7 +80,6 @@ python manage.py runserver
 ## 📈 Future Improvements
 
 - Online Payment Gateway
-- Email Ticket Confirmation
 - QR Code Ticket System
 - Movie Recommendations
 - Cloud Deployment
